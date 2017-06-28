@@ -11,73 +11,68 @@
             // my score needs to be displayed at the bottom based
             // off the crystal I click
 
-$(document).ready(function() {
+var myScore = 0;
+var wins = 0;
+var losses = 0;
+var randomComputerNumber;
+
+function getRandomNum(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function gameStart() {
+    randomComputerNumber = getRandomNum(19, 120);
+    
+    $('.crystals div').each(function() {
+        var crystal = $(this);
+
+        crystal.attr('data-number', getRandomNum(1, 12));
+    });
+
+    $("#winsTotal").text("Wins: " + wins);
+    $("#lossesTotal").text("Losses: " + losses);
+    $("#randomNumber").text(randomComputerNumber);
+    $("#myScore").text(myScore);
+}
 
 
-            var myScore = 0;
-            var wins = 0;
-            var losses = 0;
-            var randomComputerNumber = Math.floor(Math.random() * 102 + 19);
-            var crystal1 = Math.floor(Math.random() * 12 + 1);
-            var crystal2 = Math.floor(Math.random() * 12 + 1);
-            var crystal3 = Math.floor(Math.random() * 12 + 1);
-           	var crystal4 = Math.floor(Math.random() * 12 + 1);
 
-             function gameStart() {
-            
-            randomComputerNumber = Math.floor(Math.random() * 102 + 19);
-            crystal1 = Math.floor(Math.random() * 12 + 1);
-            crystal2 = Math.floor(Math.random() * 12 + 1);
-            crystal3 = Math.floor(Math.random() * 12 + 1);
-           	crystal4 = Math.floor(Math.random() * 12 + 1);
+function addToScore() {
+    var crystal = $(this);
+    var value = Number(crystal.attr('data-number'));
 
-            	$("#winsTotal").text("Wins: " + wins);
-				$("#lossesTotal").text("Losses: " + losses);
-				$("#randomNumber").text(randomComputerNumber);
-				$("#myScore").text(myScore);
+    myScore += value;
+    if (myScore > randomComputerNumber) {
+        alert("What have you done!?!");
+        losses++;
+    $("#lossesTotal").text("Losses: " + losses);
 
-				console.log(crystal1);
+    gameStart();
+    myScore =0;
+
+        if (myScore == randomComputerNumber){
+            alert("Champion!")
+            wins++;
+            $("#winsTotal").text("Wins: " + wins);
+            gameStart();
+            myScore =0;
+
         }
+
+    }
+
+    $('#myScore').text(myScore);
+}
+
+$('.crystals div').on('click', addToScore);
+
+
+gameStart();
+
+
 
 
 	
-
-		// gameStart();
-		// $(".image").on("click", function() {
-						
-		// var crystalPressed = $(this).attr("value");
-		gameStart();
-		$("crystal1").on("click", function(){
-			myScore = myScore + crystal1;
-		})
-
-        // if (crystalPressed == "crystal1") {
-        // 	myScore += crystal1;
-        // } else if (crystalPressed == "crystal2") {
-        // 	myScore += crystal2;
-        // } else if (crystalPressed == "crystal3") {
-        // 	myScore += crystal3;
-        // } else if (crystalPressed == "crystal4") {
-        // 	myScore += crystal4;
-        // } 
-        });
-
-					function endResult() {
-		if (myScore > randomComputerNumber) {
-			losses++;
-			alert("Whomp Whomp")		
-			gameStart();
-		}
-
-		if (myScore == randomComputerNumber) {
-			wins++;
-			alert("You won huzzah!");
-			gameStart();
-		}
-
-        $("#myScore").html(myScore);
-        endResult();
-    };
 
 	
 
